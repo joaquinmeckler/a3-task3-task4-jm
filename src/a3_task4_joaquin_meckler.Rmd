@@ -1,0 +1,73 @@
+---
+title: "ESM 206 A3 Task 4"
+author: "Joaquin Meckler"
+date: "11/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(here)
+library(kableExtra)
+library(lubridate)
+```
+
+```{r}
+urchin_naples<-read_csv(here("data", "urchins.csv")) %>% 
+  clean_names() %>% 
+  mutate(date=mdy(date)) %>% 
+  mutate(year=year(date)) %>% 
+  mutate(month=month(date)) %>% 
+   filter(site=="NAPL", year=="2010", month=="1") 
+```
+
+```{r}
+ggplot(data=urchin_naples, aes(x=size))+
+         geom_histogram()+
+         facet_wrap(~treatment)+
+  theme_bw()+
+  labs(x = "Size (cm)", 
+       y = "Number of Urchins", 
+       title= "Size Differences Between Treatment Types in Purple Urchin")
+```
+
+
+```{r}
+ggplot(data=urchin_naples, aes(sample=size))+
+  geom_qq()+
+  facet_wrap(~treatment)+
+  theme_bw()+ 
+  labs(x = "Theoretical Quantiles", 
+       y = "Sample Quantiles", 
+       title= "Size Differences Between Treatment Types in Purple Urchin")
+```
+
+```{r}
+urchin_naples_summary<-urchin_naples %>% 
+  group_by(treatment) %>% 
+  summarize(mean=mean(size), median=median(size), sd=sd(size), n=n())
+
+kbl(urchin_naples_summary) %>% 
+  kable_styling()
+```
+
+
+
+
+```{r}
+annual<-urchin_naples %>% 
+  filter(treatment=="ANNUAL") %>% 
+  pull(size)
+
+control<-urchin_naples %>% 
+  filter(treatment=="CONTROL") %>% 
+  pull(size)
+```
+
+```{r}
+t.test(x=annual, control)
+```
+

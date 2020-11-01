@@ -1,0 +1,92 @@
+---
+title: "ESM 206 A3 Task 3"
+author: "Joaquin Meckler"
+date: "11/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(here)
+library(kableExtra)
+library(lubridate)
+```
+
+```{r}
+urchin<-read_csv(here("data", "urchins.csv")) %>% 
+  clean_names()
+```
+
+```{r}
+ggplot(data=urchin, aes(x=size))+
+  geom_histogram()+
+  labs(x = "Size (cm)", 
+       y = "Number of Urchins", 
+       title= "Size and Population Differences Among Urchin Species")+
+  facet_wrap(~common_name)+
+  theme_bw()
+```
+
+```{r}
+ggplot(data=urchin, aes(x=common_name, y=size))+
+  geom_boxplot()+ 
+  labs(y = "Size (cm)", 
+       x = "Urchin Common Name", 
+       title= "Size Differences Among Urchin Species")+
+  theme_bw()
+```
+
+```{r}
+urchin_summary<-urchin %>% 
+  group_by(common_name) %>% 
+  summarize(mean=mean(size), median=median(size), sd=sd(size), n=n())
+
+kbl(urchin_summary) %>% 
+  kable_styling()
+  
+```
+## take away 2-3 sentences
+
+
+
+```{r}
+purple_urchins<-urchin %>% 
+  filter(common_name=="Purple Urchin") %>% 
+  mutate(Date=mdy(date)) %>% 
+  mutate(year=year(Date)) %>% 
+  mutate(site_full=case_when(
+    site=="NAPL"~"Naples Reef",
+    site=="AQUE" ~ "Arroyo Quemado Reef",
+    site=="CARP" ~ "Carpinteria Reef",
+    site== "MOHK"~ "Mohawk Reef",
+    site== "IVEE"~ "Isla Vista Reef"
+  ))
+```
+
+
+```{r}
+purple_urchins_summary<-purple_urchins %>% 
+    group_by(site_full, year) %>% 
+  count(year)
+```
+
+```{r}
+kbl(purple_urchins_summary) %>% 
+  kable_styling()
+```
+
+
+```{r}
+ggplot(data=purple_urchins_summary, aes(x=year, y=n))+
+  geom_line(aes(color=site_full))+
+  labs(y = "Population Count", 
+       x = "Year", 
+       title= "Population Differences Between Sites in Purple Urchin")
+```
+
+
+
+
