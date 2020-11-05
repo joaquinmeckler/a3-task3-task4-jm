@@ -21,12 +21,14 @@ urchin_naples<-read_csv(here("data", "urchins.csv")) %>%
   mutate(date=mdy(date)) %>% 
   mutate(year=year(date)) %>% 
   mutate(month=month(date)) %>% 
-   filter(site=="NAPL", year=="2010", month=="1") 
-```
+   filter(site=="NAPL", year=="2010", month=="1")
 
+class(urchin_naples$date)
+```
+##struges rule 
 ```{r}
 ggplot(data=urchin_naples, aes(x=size))+
-         geom_histogram()+
+         geom_histogram(bins=20)+
          facet_wrap(~treatment)+
   theme_bw()+
   labs(x = "Size (cm)", 
@@ -52,6 +54,8 @@ urchin_naples_summary<-urchin_naples %>%
 
 kbl(urchin_naples_summary) %>% 
   kable_styling()
+
+
 ```
 
 
@@ -65,6 +69,9 @@ annual<-urchin_naples %>%
 control<-urchin_naples %>% 
   filter(treatment=="CONTROL") %>% 
   pull(size)
+
+pct_dif((mean(control)), mean(annual))
+actual_dif((mean(control)), mean(annual))
 ```
 
 ```{r}

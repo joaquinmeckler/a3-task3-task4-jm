@@ -4,7 +4,9 @@ author: "Joaquin Meckler"
 date: "11/1/2020"
 output: html_document
 ---
+## Introduction 
 
+For this weeks lab, part 3 and 4 involve working with data provided by Santa Barbara Coastal LTER. This data contains observations collected by program divers along the Santa Barbara coast. The data citation is at the conclusion of this task. To start, I downloaded the necessary packages. The new ones this time are *kableExtra*, which helps with summary tables, and *lubridate*, which helps with wrangling date columns within a table. In a quick anecdote that might amuse whoever is grading this, I consistently look at the word "urchin" and think it is misspelled. Anyway, after reading in the packages, I began to read in the data and take a look at the variables within it. 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(tidyverse)
@@ -15,10 +17,15 @@ library(kableExtra)
 library(lubridate)
 ```
 
+## Part 1
+
+After reading in the data and using the clean names function, I created some exploratory data visualization graphs. These exploratory graphs are meant to be a quick snapshot look at the data and give some hints at where to focus my future exploratory efforts. 
+
 ```{r}
 urchin<-read_csv(here("data", "urchins.csv")) %>% 
   clean_names()
 ```
+### Exploratory Graph 1
 
 ```{r}
 ggplot(data=urchin, aes(x=size))+
@@ -30,14 +37,23 @@ ggplot(data=urchin, aes(x=size))+
   theme_bw()
 ```
 
+In the above histogram, I wanted to better look at this distribution of sizes between urchin species. I was thinking about using the *bins=* function but decided it would be better as is and since it was an exploratory graph, I didn't think it was necessary. It quickly showed me the approximate differences in size and overall spread within each species. *Facet_wrap* allowed me to split it into different different charts within the graph. 
+
+### Exploratory Graph 2
 ```{r}
 ggplot(data=urchin, aes(x=common_name, y=size))+
   geom_boxplot()+ 
   labs(y = "Size (cm)", 
-       x = "Urchin Common Name", 
+       x = "Common Name", 
        title= "Size Differences Among Urchin Species")+
   theme_bw()
 ```
+
+To take another look at the data, I used a boxplot to see the difference in mean size between the species. This was helpful to get a better visual how red urchin is larger then purple in the dataset we are working with.  
+
+## Part 2
+
+Now that I had made a couple quick graphs, I wanted to view the data through a statistical lens. Using the *summarize* function, was able to get the mean, median, standard devation, and total number of observations for each speices. I used the *kable_styling* to make the knitted document look more appealing. 
 
 ```{r}
 urchin_summary<-urchin %>% 
@@ -46,12 +62,29 @@ urchin_summary<-urchin %>%
 
 kbl(urchin_summary) %>% 
   kable_styling()
-  
+
 ```
-## take away 2-3 sentences
+Now that I have a quick summary of mean, median, standard devation, and obersvation count, I can look at the percent difference and actual difference. To do this, I quickly created two different functions and then plugged in the numbers I got from the urchin_summary table to run the functions. 
 
+```{r}
+pct_dif<-function(a,b){(b-a)/((a+b)/2)}
+actual_dif<-function(a,b){b-a}
 
+pct_dif(4.469797, 6.776489)
+actual_dif(4.469797, 6.776489)
+```
 
+## Takeaway 
+
+With this quick summary, I can tell the purple urchin has a much larger mean and median. The red urchin also has a slightly higher standard deviation, meaning the data is more spread out around a central mean of 6.78cm. There were nearly 4,400 more purple urchins then red urchins recorded overall. The standard deveation also allows us to better understand the distribution of observations. The size distribution is more spread out for red urchins whereas it is more condensed around a smaller mean for the purple urchin. 
+
+The percent difference of 41% and the actual difference of 2.3cm tell us COMPLETE
+
+###Section 2
+
+Now that I had the looked at just the size difference, I am going to look at size differences among the different sites but just for purple urchins. Since the sites are in abbreviations, I am using the *mutate* function and *lubridate* package to rename them to the full site names. I put all of this in a dataset called *purple_urchin*
+
+Once complete, I ran the class function to see what form the data was in. Normally, I would just do this in the console but I figured its good to get into the habit and will remind me when I comeback to this script later. 
 ```{r}
 purple_urchins<-urchin %>% 
   filter(common_name=="Purple Urchin") %>% 
@@ -64,29 +97,35 @@ purple_urchins<-urchin %>%
     site== "MOHK"~ "Mohawk Reef",
     site== "IVEE"~ "Isla Vista Reef"
   ))
+
+class(purple_urchins$Date)
 ```
 
+Similar to the earlier tasks, I want to view the summary of the observations of purple urchin by site by year. I called this *purple_urchins_summary* 
 
 ```{r}
 purple_urchins_summary<-purple_urchins %>% 
     group_by(site_full, year) %>% 
   count(year)
 ```
-
+ 
+I made it *fancy* with kable_styling
+ 
 ```{r}
 kbl(purple_urchins_summary) %>% 
   kable_styling()
 ```
-
-
+## Exploratory Graph 3  
 ```{r}
-ggplot(data=purple_urchins_summary, aes(x=year, y=n))+
-  geom_line(aes(color=site_full))+
+ggplot(data=purple_urchins_summary, aes(x=year, y=n, fill = site_full))+
+  geom_col(aes())+
   labs(y = "Population Count", 
        x = "Year", 
-       title= "Population Differences Between Sites in Purple Urchin")
+       title= "Population Differences Between Sites in Purple Urchin")+
+  facet_wrap(~site_full)+
+  theme(legend.position="FALSE")
 ```
 
-
+To take a better look at the data, I used a ggplot bar graph and did facet_wrap so each site had their own graph. I thought this could be a possible situation in which a stacked boxplot is useful but as soon as I tried, I decided I didn't like it, even for an exploratory graph. I removed the legend, added labels and added color to the graph. Across the five sites, it appears that overall purple urchin numbers are declining, possibly due to over harvesting, being outcompeted by other species, or other man-made or natural reasons. 
 
 
