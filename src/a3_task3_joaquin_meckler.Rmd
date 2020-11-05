@@ -6,7 +6,7 @@ output: html_document
 ---
 ## Introduction 
 
-For this weeks lab, part 3 and 4 involve working with data provided by Santa Barbara Coastal LTER. This data contains observations collected by program divers along the Santa Barbara coast. The data citation is at the conclusion of this task. To start, I downloaded the necessary packages. The new ones this time are *kableExtra*, which helps with summary tables, and *lubridate*, which helps with wrangling date columns within a table. In a quick anecdote that might amuse whoever is grading this, I consistently look at the word "urchin" and think it is misspelled. Anyway, after reading in the packages, I began to read in the data and take a look at the variables within it. 
+For this weeks lab, part 3 and 4 involve working with data provided by Santa Barbara Coastal LTER. This data contains observations collected by program divers along the Santa Barbara coast. The dataset and more information about how it was collected and by who can be found  [here](https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-sbc.26.20). To start, I downloaded the necessary packages. The new ones this time are *kableExtra*, which helps with summary tables, and *lubridate*, which helps with wrangling date columns within a table. In a quick anecdote that might amuse whoever is grading this, I consistently look at the word "urchin" and think it is misspelled. Anyway, after reading in the packages, I began to read in the data and take a look at the variables within it. 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(tidyverse)
@@ -80,7 +80,7 @@ With this quick summary, I can tell the purple urchin has a much larger mean and
 
 The percent difference of 41% and the actual difference of 2.3cm tell us COMPLETE
 
-###Section 2
+### Section 2
 
 Now that I had the looked at just the size difference, I am going to look at size differences among the different sites but just for purple urchins. Since the sites are in abbreviations, I am using the *mutate* function and *lubridate* package to rename them to the full site names. I put all of this in a dataset called *purple_urchin*
 

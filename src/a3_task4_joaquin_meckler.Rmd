@@ -4,7 +4,8 @@ author: "Joaquin Meckler"
 date: "11/1/2020"
 output: html_document
 ---
-
+## Introduction 
+For part 4 of this assignment, I will be working with the same data set as before. This data is provided by Santa Barbara Coastal LTER and contains observations collected by program divers along the Santa Barbara coast. After loading in the usual packages, I read in the data but instead of having two seperate code chunks, I read in the data and used the mutate and filter function immediately after. 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(tidyverse)
@@ -15,6 +16,7 @@ library(kableExtra)
 library(lubridate)
 ```
 
+### Reading in the data and wrangling 
 ```{r}
 urchin_naples<-read_csv(here("data", "urchins.csv")) %>% 
   clean_names() %>% 
@@ -25,7 +27,9 @@ urchin_naples<-read_csv(here("data", "urchins.csv")) %>%
 
 class(urchin_naples$date)
 ```
-##struges rule 
+After reading in the date, I used the *clean_names* to make it all lowercase and then the mutate function to allow me to better wrangle the dates. Changing them from a **XXXX-XX-XX** setup to just a seperate year and month column is much easier to work with. Again, I checked the class, something I would usually do in the console. In the end, I wrangled the dataset to only include observations from the Naples site from the year 2010 and the month of January.
+
+### Exploratory Graph 1 
 ```{r}
 ggplot(data=urchin_naples, aes(x=size))+
          geom_histogram(bins=20)+
@@ -37,6 +41,10 @@ ggplot(data=urchin_naples, aes(x=size))+
 ```
 
 
+## Takeaway
+For this histogram, I can see that the mean and median appears to be similar but there is more spread in the control treatment group. I used the *bins function* here make the graph better represent the distribution of the data. ADD TO THIS
+
+## Exporatory Graph 2
 ```{r}
 ggplot(data=urchin_naples, aes(sample=size))+
   geom_qq()+
@@ -46,7 +54,11 @@ ggplot(data=urchin_naples, aes(sample=size))+
        y = "Sample Quantiles", 
        title= "Size Differences Between Treatment Types in Purple Urchin")
 ```
+## Takeaway 
 
+Next, I used a QQ plot to determine how normal the distribution of observations of the two treatment types is. QQ plots can help us determine if a data set comes from a population with a normal distribution. QQ plots have sample quantities on the y-axis and theoretical quantities on the x-axis. The more linear the line appears, the more likely it is that the dataset has a normal distribution. In this case, the annual treatment dataset appears to have a more normal distribution of observations when compared to the control treatment dataset. 
+
+## Statistical Summary and T-Test
 ```{r}
 urchin_naples_summary<-urchin_naples %>% 
   group_by(treatment) %>% 
@@ -62,6 +74,7 @@ kbl(urchin_naples_summary) %>%
 
 
 ```{r}
+
 annual<-urchin_naples %>% 
   filter(treatment=="ANNUAL") %>% 
   pull(size)
@@ -70,6 +83,9 @@ control<-urchin_naples %>%
   filter(treatment=="CONTROL") %>% 
   pull(size)
 
+pct_dif<-function(a,b){(b-a)/((a+b)/2)}
+actual_dif<-function(a,b){b-a}
+
 pct_dif((mean(control)), mean(annual))
 actual_dif((mean(control)), mean(annual))
 ```
@@ -77,4 +93,7 @@ actual_dif((mean(control)), mean(annual))
 ```{r}
 t.test(x=annual, control)
 ```
+### Takeaway
 
+Looking at the summary table, we can see the close differences in the mean and median between the control and annual treatment datasets. The annual treatment has a larger standard deviation, meaning it contains observations with a greater data spread from the mean. The percent difference is much smaller here, only 4.2% and the actual difference is .22cm. This allows us to see that the difference between these two sites is quite small. Perhaps the treatment has no effect on the urchins? 
+To better understand this relationship, we use two sample t-test. With this, we get a p value of .3063. This is the probability of getting 2 sample means that are least as different as the sample means we got from our annual and control treatment datasets. Since we have a relatively high p-value, there is less evidence of difference between populations means. This point is further support by our means found in the summary table, which have an actual difference of .22cm. Thus, we cannot reject the null hypothesis based on our calculated p-value.
