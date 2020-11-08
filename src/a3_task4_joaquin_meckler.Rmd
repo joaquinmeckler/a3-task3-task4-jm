@@ -23,7 +23,7 @@ urchin_naples<-read_csv(here("data", "urchins.csv")) %>%
   mutate(date=mdy(date)) %>% 
   mutate(year=year(date)) %>% 
   mutate(month=month(date)) %>% 
-   filter(site=="NAPL", year=="2010", month=="1")
+   filter(site=="NAPL", year=="2010", month=="1", common_name=="Purple Urchin")
 
 class(urchin_naples$date)
 ```
@@ -95,5 +95,6 @@ t.test(x=annual, control)
 ```
 ### Takeaway
 
-Looking at the summary table, we can see the close differences in the mean and median between the control and annual treatment datasets. The annual treatment has a larger standard deviation, meaning it contains observations with a greater data spread from the mean. The percent difference is much smaller here, only 4.2% and the actual difference is .22cm. This allows us to see that the difference between these two sites is quite small. Perhaps the treatment has no effect on the urchins? 
-To better understand this relationship, we use two sample t-test. With this, we get a p value of .3063. This is the probability of getting 2 sample means that are least as different as the sample means we got from our annual and control treatment datasets. Since we have a relatively high p-value, there is less evidence of difference between populations means. This point is further support by our means found in the summary table, which have an actual difference of .22cm. Thus, we cannot reject the null hypothesis based on our calculated p-value.
+Looking at the summary table, we can see the close differences in the mean and median between the control and annual treatment datasets. The annual treatment has a larger standard deviation, meaning it contains observations with a greater data spread from the mean. The percent difference is much smaller here, only 4.9% and the actual difference is .19cm. This allows us to see that the difference between these two sites is quite small. Perhaps the treatment has no effect on the urchins? 
+To better understand this relationship, we use two sample t-test. With this, we get a p value of .2536. This is the probability of getting 2 sample means that are least as different as the sample means we got from our annual and control treatment datasets. Since we have a relatively high p-value, there is less evidence of difference between populations means. This point is further support by our means found in the summary table, which have an actual difference of .19cm. Thus, we cannot reject the null hypothesis based on our calculated p-value.
+ADD STUFF ABOUT CONFIDENCE INTERVAL
