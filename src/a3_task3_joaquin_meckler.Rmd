@@ -29,7 +29,7 @@ urchin<-read_csv(here("data", "urchins.csv")) %>%
 
 ```{r}
 ggplot(data=urchin, aes(x=size))+
-  geom_histogram()+
+  geom_histogram()+ #ASK IF SHOULD INCLUDE BINS OR WHY THAT INCREASES TOTAL ON Y AXIS
   labs(x = "Size (cm)", 
        y = "Number of Urchins", 
        title= "Size and Population Differences Among Urchin Species")+
@@ -76,7 +76,7 @@ actual_dif(4.469797, 6.776489)
 
 ## Takeaway 
 
-With this quick summary, I can tell the purple urchin has a much larger mean and median. The red urchin also has a slightly higher standard deviation, meaning the data is more spread out around a central mean of 6.78cm. There were nearly 4,400 more purple urchins then red urchins recorded overall. The standard deveation also allows us to better understand the distribution of observations. The size distribution is more spread out for red urchins whereas it is more condensed around a smaller mean for the purple urchin. 
+With this quick summary, I can tell the purple urchin has a much larger mean and median. The red urchin also has a slightly higher standard deviation, meaning the data is more spread out around a central mean of 6.78cm. There were nearly 4,400 more purple urchins then red urchins recorded overall. The standard deviation also allows us to better understand the distribution of observations. The size distribution is more spread out for red urchins whereas it is more condensed around a smaller mean for the purple urchin. 
 
 The percent difference of 41% and the actual difference of 2.3cm tell us COMPLETE
 

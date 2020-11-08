@@ -575,7 +575,7 @@ summary {
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>For this weeks lab, part 3 and 4 involve working with data provided by Santa Barbara Coastal LTER. This data contains observations collected by program divers along the Santa Barbara coast. The data citation is <a href="https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-sbc.26.20">here</a>. To start, I downloaded the necessary packages. The new ones this time are <em>kableExtra</em>, which helps with summary tables, and <em>lubridate</em>, which helps with wrangling date columns within a table. In a quick anecdote that might amuse whoever is grading this, I consistently look at the word “urchin” and think it is misspelled. Anyway, after reading in the packages, I began to read in the data and take a look at the variables within it.</p>
+<p>For this weeks lab, part 3 and 4 involve working with data provided by Santa Barbara Coastal LTER. This data contains observations collected by program divers along the Santa Barbara coast. The dataset and more information about how it was collected and by who can be found <a href="https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-sbc.26.20">here</a>. To start, I downloaded the necessary packages. The new ones this time are <em>kableExtra</em>, which helps with summary tables, and <em>lubridate</em>, which helps with wrangling date columns within a table. In a quick anecdote that might amuse whoever is grading this, I consistently look at the word “urchin” and think it is misspelled. Anyway, after reading in the packages, I began to read in the data and take a look at the variables within it.</p>
 </div>
 <div id="part-1" class="section level2">
 <h2>Part 1</h2>
@@ -585,7 +585,7 @@ summary {
 <div id="exploratory-graph-1" class="section level3">
 <h3>Exploratory Graph 1</h3>
 <pre class="r"><code>ggplot(data=urchin, aes(x=size))+
-  geom_histogram()+
+  geom_histogram()+ #ASK IF SHOULD INCLUDE BINS OR WHY THAT INCREASES TOTAL ON Y AXIS
   labs(x = &quot;Size (cm)&quot;, 
        y = &quot;Number of Urchins&quot;, 
        title= &quot;Size and Population Differences Among Urchin Species&quot;)+
@@ -683,7 +683,7 @@ pct_dif(4.469797, 6.776489)</code></pre>
 </div>
 <div id="takeaway" class="section level2">
 <h2>Takeaway</h2>
-<p>With this quick summary, I can tell the purple urchin has a much larger mean and median. The red urchin also has a slightly higher standard deviation, meaning the data is more spread out around a central mean of 6.78cm. There were nearly 4,400 more purple urchins then red urchins recorded overall. The standard deveation also allows us to better understand the distribution of observations. The size distribution is more spread out for red urchins whereas it is more condensed around a smaller mean for the purple urchin.</p>
+<p>With this quick summary, I can tell the purple urchin has a much larger mean and median. The red urchin also has a slightly higher standard deviation, meaning the data is more spread out around a central mean of 6.78cm. There were nearly 4,400 more purple urchins then red urchins recorded overall. The standard deviation also allows us to better understand the distribution of observations. The size distribution is more spread out for red urchins whereas it is more condensed around a smaller mean for the purple urchin.</p>
 <p>The percent difference of 41% and the actual difference of 2.3cm tell us COMPLETE</p>
 <div id="section-2" class="section level3">
 <h3>Section 2</h3>
