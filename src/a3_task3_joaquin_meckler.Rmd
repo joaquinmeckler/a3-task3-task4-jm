@@ -29,7 +29,7 @@ urchin<-read_csv(here("data", "urchins.csv")) %>%
 
 ```{r}
 ggplot(data=urchin, aes(x=size))+
-  geom_histogram(bins=15)+ #ASK IF SHOULD INCLUDE BINS OR WHY THAT INCREASES TOTAL ON Y AXIS
+  geom_histogram(bins=17)+ #ASK IF SHOULD INCLUDE BINS OR WHY THAT INCREASES TOTAL ON Y AXIS
   labs(x = "Size (cm)", 
        y = "Number of Urchins", 
        title= "Size and Population Differences Among Urchin Species")+
