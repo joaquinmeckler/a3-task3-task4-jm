@@ -29,7 +29,7 @@ urchin<-read_csv(here("data", "urchins.csv")) %>%
 
 ```{r}
 ggplot(data=urchin, aes(x=size))+
-  geom_histogram()+ #ASK IF SHOULD INCLUDE BINS OR WHY THAT INCREASES TOTAL ON Y AXIS
+  geom_histogram(bins=15)+ #ASK IF SHOULD INCLUDE BINS OR WHY THAT INCREASES TOTAL ON Y AXIS
   labs(x = "Size (cm)", 
        y = "Number of Urchins", 
        title= "Size and Population Differences Among Urchin Species")+
@@ -37,7 +37,7 @@ ggplot(data=urchin, aes(x=size))+
   theme_bw()
 ```
 
-In the above histogram, I wanted to better look at this distribution of sizes between urchin species. I was thinking about using the *bins=* function but decided it would be better as is and since it was an exploratory graph, I didn't think it was necessary. It quickly showed me the approximate differences in size and overall spread within each species. *Facet_wrap* allowed me to split it into different different charts within the graph. 
+In the above histogram, I wanted to better look at this distribution of sizes between urchin species. I was thinking about using the *bins=* function and decided it would be better to include since it was an exploratory graph. It quickly showed me the approximate differences in size and overall spread within each species. *Facet_wrap* allowed me to split it into different different charts within the graph. 
 
 ### Exploratory Graph 2
 ```{r}
@@ -76,15 +76,17 @@ actual_dif(4.469797, 6.776489)
 
 ## Takeaway 
 
-With this quick summary, I can tell the purple urchin has a much larger mean and median. The red urchin also has a slightly higher standard deviation, meaning the data is more spread out around a central mean of 6.78cm. There were nearly 4,400 more purple urchins then red urchins recorded overall. The standard deviation also allows us to better understand the distribution of observations. The size distribution is more spread out for red urchins whereas it is more condensed around a smaller mean for the purple urchin. 
+With this quick summary, I can tell the purple urchin has a much larger mean and median and is positive skewed (slightly leptokurtic). The red urchin also has a slightly higher standard deviation, meaning the data is more spread out around a central mean of 6.78cm. There were nearly 4,400 more purple urchins then red urchins recorded overall. The standard deviation also allows us to better understand the distribution of observations. The size distribution is more spread out for red urchins whereas it is more condensed around a smaller mean for the purple urchin. 
 
-The percent difference of 41% and the actual difference of 2.3cm tell us COMPLETE
+
+The actual difference red urchin mean being 2.3cm greater than the purple urchin mean, and the the percent difference of 41% further display the size disparity between species. 
 
 ### Section 2
 
 Now that I had the looked at just the size difference, I am going to look at size differences among the different sites but just for purple urchins. Since the sites are in abbreviations, I am using the *mutate* function and *lubridate* package to rename them to the full site names. I put all of this in a dataset called *purple_urchin*
 
 Once complete, I ran the class function to see what form the data was in. Normally, I would just do this in the console but I figured its good to get into the habit and will remind me when I comeback to this script later. 
+
 ```{r}
 purple_urchins<-urchin %>% 
   filter(common_name=="Purple Urchin") %>% 
@@ -125,7 +127,7 @@ ggplot(data=purple_urchins_summary, aes(x=year, y=n, fill = site_full))+
   facet_wrap(~site_full)+
   theme(legend.position="FALSE")
 ```
-
+## Conclusion 
 To take a better look at the data, I used a ggplot bar graph and did facet_wrap so each site had their own graph. I thought this could be a possible situation in which a stacked boxplot is useful but as soon as I tried, I decided I didn't like it, even for an exploratory graph. I removed the legend, added labels and added color to the graph. Across the five sites, it appears that overall purple urchin numbers are declining, possibly due to over harvesting, being outcompeted by other species, or other man-made or natural reasons. 
 
 

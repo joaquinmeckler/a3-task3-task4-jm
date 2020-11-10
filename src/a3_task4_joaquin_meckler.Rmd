@@ -5,7 +5,7 @@ date: "11/1/2020"
 output: html_document
 ---
 ## Introduction 
-For part 4 of this assignment, I will be working with the same data set as before. This data is provided by Santa Barbara Coastal LTER and contains observations collected by program divers along the Santa Barbara coast. After loading in the usual packages, I read in the data but instead of having two seperate code chunks, I read in the data and used the mutate and filter function immediately after. 
+For part 4 of this assignment, I will be working with the same data set as before. This data is provided by Santa Barbara Coastal LTER and contains observations collected by program divers along the Santa Barbara coast. After loading in the usual packages, I read in the data but instead of having two separate code chunks, I read in the data and used the mutate and filter function immediately after. 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(tidyverse)
@@ -27,22 +27,19 @@ urchin_naples<-read_csv(here("data", "urchins.csv")) %>%
 
 class(urchin_naples$date)
 ```
-After reading in the date, I used the *clean_names* to make it all lowercase and then the mutate function to allow me to better wrangle the dates. Changing them from a **XXXX-XX-XX** setup to just a seperate year and month column is much easier to work with. Again, I checked the class, something I would usually do in the console. In the end, I wrangled the dataset to only include observations from the Naples site from the year 2010 and the month of January.
+After reading in the date, I used the *clean_names* to make it all lowercase and then the mutate function to allow me to better wrangle the dates. Changing them from a **XXXX-XX-XX** setup to just a seperate year and month column is much easier to work with. Again, I checked the class, something I would usually do in the console. In the end, I wrangled the dataset to only include observations from the Naples site from the year 2010 and the month of January for only purple urchins.
 
 ### Exploratory Graph 1 
 ```{r}
 ggplot(data=urchin_naples, aes(x=size))+
-         geom_histogram(bins=20)+
+         geom_histogram(aes(x = size, fill = treatment), breaks = seq(2,6,.5), alpha = .6)+
          facet_wrap(~treatment)+
-  theme_bw()+
+  theme(legend.position="none")+
   labs(x = "Size (cm)", 
        y = "Number of Urchins", 
        title= "Size Differences Between Treatment Types in Purple Urchin")
 ```
 
-
-## Takeaway
-For this histogram, I can see that the mean and median appears to be similar but there is more spread in the control treatment group. I used the *bins function* here make the graph better represent the distribution of the data. ADD TO THIS
 
 ## Exporatory Graph 2
 ```{r}
@@ -56,7 +53,7 @@ ggplot(data=urchin_naples, aes(sample=size))+
 ```
 ## Takeaway 
 
-Next, I used a QQ plot to determine how normal the distribution of observations of the two treatment types is. QQ plots can help us determine if a data set comes from a population with a normal distribution. QQ plots have sample quantities on the y-axis and theoretical quantities on the x-axis. The more linear the line appears, the more likely it is that the dataset has a normal distribution. In this case, the annual treatment dataset appears to have a more normal distribution of observations when compared to the control treatment dataset. 
+For exploratory graph 1, it appears that the control is slightly positively skewed, meaning the values are distrubted towards the lower end of the range, whereas the annual displays more of a normal distribution centered around a mean.  I used a QQ plot to determine how normal the distribution of observations of the two treatment types is. QQ plots can help us determine if a data set comes from a population with a normal distribution. QQ plots have sample quantities on the y-axis and theoretical quantities on the x-axis. The more linear the line appears, the more likely it is that the dataset has a normal distribution. In this case, the annual treatment dataset appears to have a slightly more normal distribution of observations when compared to the control treatment dataset. 
 
 ## Statistical Summary and T-Test
 ```{r}
@@ -96,5 +93,4 @@ t.test(x=annual, control)
 ### Takeaway
 
 Looking at the summary table, we can see the close differences in the mean and median between the control and annual treatment datasets. The annual treatment has a larger standard deviation, meaning it contains observations with a greater data spread from the mean. The percent difference is much smaller here, only 4.9% and the actual difference is .19cm. This allows us to see that the difference between these two sites is quite small. Perhaps the treatment has no effect on the urchins? 
-To better understand this relationship, we use two sample t-test. With this, we get a p value of .2536. This is the probability of getting 2 sample means that are least as different as the sample means we got from our annual and control treatment datasets. Since we have a relatively high p-value, there is less evidence of difference between populations means. This point is further support by our means found in the summary table, which have an actual difference of .19cm. Thus, we cannot reject the null hypothesis based on our calculated p-value.
-ADD STUFF ABOUT CONFIDENCE INTERVAL
+To better understand this relationship, we use two sample t-test. With this, we get a p value of .2536. This is the probability of getting 2 sample means that are least as different as the sample means as those if taken randomly from a population with the same mean. Since we have a relatively high p-value, there is less evidence of difference between populations means. This point is further support by our means found in the summary table, which have an actual difference of .19cm. Thus, we cannot reject the null hypothesis based on our calculated p-value.
